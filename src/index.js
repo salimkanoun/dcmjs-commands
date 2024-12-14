@@ -11,6 +11,11 @@ export function readDicom(fileName) {
   return dicomDict;
 }
 
+export function writeDicom(fileName, dicomDict) {
+  const writeBuffer = dicomDict.write();
+  fs.writeFileSync(fileName, Buffer.from(writeBuffer));
+}
+
 export function dumpDicom(dicomDict, options = {}) {
   if (dicomDict.meta) {
     console.log("Metadata");
@@ -89,4 +94,13 @@ export function instanceDicom(dicomDict, options = {}) {
   const { pretty } = options;
   const result = pretty ? JSON.stringify(dicomDict.dict, null, 2) : JSON.stringify(dicomDict.dict);
   console.log('', result);
+}
+
+export function modifyDicom(dicomDict, options = {}) {
+    const { replace } = options;
+    const [tag, value] = replace;
+    const naturalData = DicomMetaDictionary.naturalizeDataset(dicomDict.dict);
+    naturalData[tag] = value;
+    dicomDict.dict = DicomMetaDictionary.denaturalizeDataset(naturalData);
+    return dicomDict;
 }

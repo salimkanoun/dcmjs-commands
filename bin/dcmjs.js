@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { readDicom, instanceDicom, dumpDicom } from '../src/index.js';
+import { readDicom, writeDicom, instanceDicom, dumpDicom, modifyDicom } from '../src/index.js';
 
 const program = new Command();
 
@@ -27,5 +27,20 @@ program.command('instance')
     instanceDicom(dicomDict, options);
   })
 
+
+function assignment(value, dummyPrevious) {
+  return value.split('=');
+}
+
+program.command('modify')
+  .description('Change values in the dicom header')
+  .argument('<part10in>', 'part 10 input file path')
+  .option('-o, --out <part10out>', 'part 10 output file path')
+  .requiredOption('-r, --replace <tag>=<value>', 'Replace or add tag value', assignment)
+  .action(async (fileName, options) => {
+    let dicomDict = readDicom(fileName);
+    dicomDict = modifyDicom(dicomDict, options);
+    writeDicom(options.out, dicomDict);
+  })
 
 program.parse();
