@@ -50,7 +50,7 @@
   "dependencies": {
     "commander": "^12.1.0",
     "config-point": ">=0.5.1",
-    "dcmjs": "^0.29.5",
+    "dcmjs": ">0.29.5",
     "dcmjs-dimse": "0.1.27",
     "dicomweb-client": "0.8.4"
   },

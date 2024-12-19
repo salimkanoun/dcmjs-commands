@@ -19,6 +19,6 @@ for filePath in glob.glob(f'{inputDirectory}/**/*', recursive=True):
     beforeDataset = pydicom.read_file(filePath)
     print(f"Age before: {beforeDataset.PatientAge}")
     outputFilePath = f"{outputDirectory}/{fileName}"
-    result = subprocess.Popen(f"dcmjs modify {filePath} --out {outputFilePath} --replace PatientAge=021Y".split()).communicate()
+    result = subprocess.Popen(f"dcmjs modify {filePath} --logLevel ERROR --out {outputFilePath} --replace PatientAge=021Y".split()).communicate()
     afterDataset = pydicom.read_file(outputFilePath)
     print(f"Age before: {afterDataset.PatientAge}")

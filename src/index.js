@@ -97,6 +97,9 @@ export function instanceDicom(dicomDict, options = {}) {
 }
 
 export function modifyDicom(dicomDict, options = {}) {
+    if (options.logLevel) {
+        dcmjs.log.setLevel(dcmjs.log.levels[options.logLevel]);
+    }
     const { replace } = options;
     const [tag, value] = replace;
     const naturalData = DicomMetaDictionary.naturalizeDataset(dicomDict.dict);
