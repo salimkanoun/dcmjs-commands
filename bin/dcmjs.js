@@ -44,4 +44,15 @@ program.command('modify')
     writeDicom(options.out, dicomDict);
   })
 
+  program.command('rewrite')
+  .description('Change values in the dicom header')
+  .argument('<part10in>', 'part 10 input file path')
+  .option('-l, --logLevel <level>', 'logging level, TRACE, DEBUG, INFO, WARN, ERROR, default: WARN')
+  .option('-o, --out <part10out>', 'part 10 output file path')
+  .requiredOption('-r, --replace <tag>=<value>', 'Replace or add tag value', assignment)
+  .action(async (fileName, options) => {
+    let dicomDict = readDicom(fileName);
+    writeDicom(options.out, dicomDict);
+  })
+
 program.parse();
